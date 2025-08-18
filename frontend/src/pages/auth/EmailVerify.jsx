@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Mail, ArrowLeft } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Mail } from "lucide-react";
 import LottieBackground from "../../components/LottieBackground";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";

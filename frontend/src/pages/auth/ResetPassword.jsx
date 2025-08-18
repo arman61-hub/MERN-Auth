@@ -127,7 +127,9 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       <div className="hidden lg:flex lg:w-1/2 lg:fixed lg:left-0 lg:top-0 lg:h-screen">
-        <LottieBackground variant="reset" />
+        {!isEmailSent && <LottieBackground variant="forgot" /> }
+        {!isOtpVerified && isEmailSent && <LottieBackground variant="forgotOtp" /> }
+        {isOtpVerified && isEmailSent && <LottieBackground variant="reset" /> }
       </div>
       <div className="w-full lg:w-1/2 lg:ml-auto flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="w-full max-w-md mx-auto">
