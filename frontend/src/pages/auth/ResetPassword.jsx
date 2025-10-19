@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowLeft } from "lucide-react";
+import { FaEnvelope, FaLock, FaArrowLeft } from "react-icons/fa";
 import LottieBackground from "../../components/LottieBackground";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
@@ -138,7 +139,7 @@ const ResetPassword = () => {
               to="/login"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <FaArrowLeft className="w-4 h-4 mr-2" />
               Back to login
             </Link>
 
@@ -146,19 +147,7 @@ const ResetPassword = () => {
               <form onSubmit={onSubmitEmail} className="space-y-6">
                 <div className="text-center mb-8">
                   <div className="w-16 h-16 bg-gradient-to-r from-orange-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      viewBox="0 0 24 24"
-                    >
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0110 0v4" />
-                      <circle cx="12" cy="16" r="1" />
-                    </svg>
+                    <FaLock className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
                     Forgot Password?
@@ -172,7 +161,7 @@ const ResetPassword = () => {
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                    <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                     <input
                       type="email"
                       value={email}
@@ -225,7 +214,7 @@ const ResetPassword = () => {
                     We've sent a 6-digit code to your email
                   </p>
                   <div className="flex items-center justify-center">
-                    <Mail className="w-4 h-4 text-blue-500 mr-2" />
+                    <FaEnvelope className="w-4 h-4 text-blue-500 mr-2" />
                     <span className="text-blue-600 font-medium text-sm sm:text-base break-all">
                       {email}
                     </span>
@@ -282,7 +271,7 @@ const ResetPassword = () => {
               <form onSubmit={onSubmitNewPassword} className="space-y-6">
                 <div className="text-center mb-8">
                   <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Lock className="w-8 h-8 text-white" />
+                    <FaLock className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
                     New Password
@@ -296,7 +285,7 @@ const ResetPassword = () => {
                     New Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                    <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                     <input
                       type="password"
                       value={newPassword}

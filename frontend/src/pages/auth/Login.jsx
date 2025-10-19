@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import LottieBackground from "../../components/LottieBackground";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
@@ -85,7 +86,7 @@ const Login = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                  <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                   <input
                     type="email"
                     value={email}
@@ -99,7 +100,7 @@ const Login = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                  <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
@@ -114,7 +115,7 @@ const Login = () => {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500 transition-colors"
                     tabIndex={-1}
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>

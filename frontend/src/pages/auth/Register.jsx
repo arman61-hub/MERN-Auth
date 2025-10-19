@@ -1,10 +1,68 @@
 import React, { useState, useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, Shield, Eye, EyeOff, Camera } from "lucide-react";
+// import { Mail, Lock, User, Shield, Eye, EyeOff, Camera } from "lucide-react";
+import Select from "react-select";
+import { FaEnvelope, FaLock, FaUser, FaShieldAlt, FaEye, FaEyeSlash, FaCamera, FaUsers } from "react-icons/fa";
 import LottieBackground from "../../components/LottieBackground";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+
+const ROLE_OPTIONS = [
+  {
+    value: "user",
+    label: "User",
+    icon: <FaUsers style={{ color: "#22c55e", marginRight: 9 }} />,
+  },
+  {
+    value: "admin",
+    label: "Admin",
+    icon: <FaShieldAlt style={{ color: "#7c3aed", marginRight: 9 }} />,
+  },
+];
+
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: "#f3f4f6",
+    border: state.isFocused ? "2px solid #6366f1" : "1px solid #d1d5db",
+    boxShadow: state.isFocused ? "0 0 0 2px #6366f180" : "none",
+    borderRadius: 12,
+    minHeight: 52,
+    fontSize: 16,
+    paddingLeft: 4,
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    display: "flex",
+    alignItems: "center",
+    fontWeight: 500,
+    fontSize: 17,
+    color: "#334155",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: state.isSelected
+      ? "#6366f1"
+      : state.isFocused
+      ? "#e0e7ff"
+      : "#f3f4f6",
+    color: state.isSelected ? "#fff" : "#334155",
+    fontWeight: state.isSelected ? 600 : 400,
+    fontSize: 16,
+    borderBottom: "1px solid #e5e7eb",
+    paddingLeft: 12,
+    cursor: "pointer",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    borderRadius: 12,
+    overflow: "hidden",
+  }),
+};
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +70,8 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "user",
+    // accountType: "user",
+    role: ROLE_OPTIONS[0],
     avatar: null,
   });
 
@@ -34,6 +93,10 @@ const Register = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (name === "password" || name === "confirmPassword") setPasswordError("");
+  };
+
+  const handleRoleChange = (selectedOption) => {
+    setFormData((prev) => ({ ...prev, role: selectedOption }));
   };
 
   const handleAvatarChange = (e) => {
@@ -106,7 +169,7 @@ const Register = () => {
       fd.append("name", formData.name);
       fd.append("email", formData.email);
       fd.append("password", formData.password);
-      fd.append("role", formData.accountType);
+      fd.append("role", formData.role.value);
       if (formData.avatar) fd.append("avatar", formData.avatar);
 
       const { data } = await axios.post(`${backendUrl}/api/auth/register`, fd, {
@@ -130,6 +193,13 @@ const Register = () => {
     }
     setIsLoading(false);
   };
+
+  const formatOptionLabel = ({ label, icon }) => (
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      {icon}
+      <span>{label}</span>
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
@@ -166,9 +236,9 @@ const Register = () => {
                       />
                     ) : (
                       <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 shadow-lg flex items-center justify-center relative">
-                        <User className="text-white" size={48} />
+                        <FaUser className="text-white" size={36} />
                         <div className="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-blue-600 border border-white flex items-center justify-center">
-                          <Camera className="text-white" size={16} />
+                          <FaCamera className="text-white" size={14} />
                         </div>
                       </div>
                     )}
@@ -212,16 +282,20 @@ const Register = () => {
               {/* Other form inputs */}
               <div>
                 <label className="block mb-2 font-semibold">Account Type</label>
-                <select
-                  name="accountType"
-                  value={formData.accountType}
-                  onChange={handleInputChange}
-                  className="w-full rounded-md border border-gray-300 bg-white py-2 px-3"
-                  required
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Administrator</option>
-                </select>
+                <Select
+                  value={formData.role}
+                  onChange={handleRoleChange}
+                  options={ROLE_OPTIONS}
+                  formatOptionLabel={formatOptionLabel}
+                  styles={customStyles}
+                  className="react-select-container"
+                  classNamePrefix="react-select"
+                  isSearchable={false}
+                  placeholder="Select your role"
+                />
+                <span className="text-gray-400 text-xs mt-2 block">
+                  Choose your role for this application access.
+                </span>
               </div>
 
               <div>
@@ -229,7 +303,7 @@ const Register = () => {
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                  <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                   <input
                     name="name"
                     type="text"
@@ -247,7 +321,7 @@ const Register = () => {
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                  <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                   <input
                     name="email"
                     type="email"
@@ -265,7 +339,7 @@ const Register = () => {
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                  <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -281,9 +355,9 @@ const Register = () => {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500 transition-colors"
                   >
                     {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
+                      <FaEyeSlash className="w-5 h-5" />
                     ) : (
-                      <Eye className="w-5 h-5" />
+                      <FaEye className="w-5 h-5" />
                     )}
                   </button>
                 </div>
@@ -294,7 +368,7 @@ const Register = () => {
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+                  <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     name="confirmPassword"
@@ -314,9 +388,9 @@ const Register = () => {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500 transition-colors"
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="w-5 h-5" />
+                      <FaEyeSlash className="w-5 h-5" />
                     ) : (
-                      <Eye className="w-5 h-5" />
+                      <FaEye className="w-5 h-5" />
                     )}
                   </button>
                 </div>
